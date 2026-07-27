@@ -29,7 +29,7 @@ export default function MainLayout() {
 
   return (
     <div className="relative w-screen h-screen overflow-hidden bg-transparent">
-      <div className="absolute inset-0 -z-10">
+      <div className="fixed top-0 left-0 w-screen h-screen -z-10 bg-transparent">
         <Scene />
       </div>
 
