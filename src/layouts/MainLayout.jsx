@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import Lenis from "@studio-freight/lenis";
 import Scene from "../components/canvas/Scene";
 import HeroUI from "../components/ui/HeroUI";
+import ProjectsUI from "../components/ui/ProjectsUI";
 
 export default function MainLayout() {
   useEffect(() => {
@@ -35,7 +36,7 @@ export default function MainLayout() {
 
       <div className="relative z-10 w-full bg-transparent">
         <HeroUI />
-        <div className="h-[300vh]"></div>
+        <ProjectsUI />
       </div>
     </main>
   );
