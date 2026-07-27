@@ -1,12 +1,12 @@
 export default function HeroUI() {
   return (
-    <section className="flex h-screen w-full items-center justify-center px-6 sm:px-8 lg:px-12">
-      <div className="max-w-6xl text-center">
+    <div className="h-screen w-full flex flex-col items-center justify-center bg-transparent pointer-events-none px-6 sm:px-8 lg:px-12 text-center">
+      <div className="max-w-6xl">
         <p className="mb-4 text-xs font-semibold uppercase tracking-[0.5em] text-cyan-300/60 sm:text-sm">
           PORTFOLIO / SIGNAL ACTIVE
         </p>
 
-        <h1 className="text-6xl font-black tracking-tighter text-white drop-shadow-[0_0_28px_rgba(255,255,255,0.16)] sm:text-7xl lg:text-8xl xl:text-[8.5rem]">
+        <h1 className="text-7xl font-black text-white tracking-tighter">
           VISHWAS K
         </h1>
 
@@ -20,6 +20,6 @@ export default function HeroUI() {
 
         <div className="mx-auto mt-8 h-px w-24 bg-gradient-to-r from-transparent via-cyan-300/60 to-transparent" />
       </div>
-    </section>
+    </div>
   );
 }

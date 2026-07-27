@@ -28,16 +28,14 @@ export default function MainLayout() {
   }, []);
 
   return (
-    <div className="relative isolate h-screen w-screen overflow-hidden bg-slate-950 text-slate-100">
-      <div className="absolute inset-0 z-[-20] bg-[radial-gradient(circle_at_top,_rgba(56,189,248,0.16),_transparent_40%),linear-gradient(to_bottom,_rgba(15,23,42,0.96),_rgba(2,6,23,1))]" />
-
+    <div className="relative w-screen h-screen overflow-hidden bg-transparent">
       <div className="absolute inset-0 -z-10">
         <Scene />
       </div>
 
-      <div className="absolute inset-0 z-10 w-full overflow-y-auto bg-transparent">
+      <div className="absolute inset-0 z-10 overflow-y-auto bg-transparent">
         <HeroUI />
-        <div className="h-[300vh]" />
+        <div className="h-[300vh]"></div>
       </div>
     </div>
   );
