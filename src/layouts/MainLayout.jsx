@@ -28,15 +28,15 @@ export default function MainLayout() {
   }, []);
 
   return (
-    <div className="relative w-screen h-screen overflow-hidden bg-transparent">
-      <div className="fixed top-0 left-0 w-screen h-screen -z-10 bg-transparent">
+    <main className="relative w-full">
+      <div className="fixed top-0 left-0 w-full h-screen z-0 bg-transparent">
         <Scene />
       </div>
 
-      <div className="absolute inset-0 z-10 overflow-y-auto bg-transparent">
+      <div className="relative z-10 w-full bg-transparent">
         <HeroUI />
         <div className="h-[300vh]"></div>
       </div>
-    </div>
+    </main>
   );
 }
