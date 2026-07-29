@@ -1,6 +1,6 @@
 export default function ContactUI() {
   return (
-    <section className="min-h-screen w-full flex flex-col items-center justify-between text-white py-24 px-8 bg-transparent pointer-events-auto">
+    <section id="contact" className="min-h-screen w-full flex flex-col items-center justify-between text-white py-24 px-8 bg-transparent pointer-events-auto">
       <div className="flex flex-col items-center justify-center my-auto max-w-3xl text-center pointer-events-auto">
         <h2 className="text-5xl md:text-6xl font-black tracking-tighter mb-6">
           INITIATE SIGNAL

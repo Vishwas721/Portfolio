@@ -1,6 +1,6 @@
 export default function ProjectsUI() {
   return (
-    <section className="min-h-screen w-full flex flex-col items-center justify-center text-white py-24 bg-transparent">
+    <section id="projects" className="min-h-screen w-full flex flex-col items-center justify-center text-white py-24 bg-transparent">
       <h2 className="text-5xl font-bold mb-16 text-center">
         ENGINEERING ARTIFACTS
       </h2>

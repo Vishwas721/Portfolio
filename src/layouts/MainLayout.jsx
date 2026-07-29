@@ -3,6 +3,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Lenis from "@studio-freight/lenis";
 import Scene from "../components/canvas/Scene";
+import NavbarUI from "../components/ui/NavbarUI";
 import HeroUI from "../components/ui/HeroUI";
 import ProjectsUI from "../components/ui/ProjectsUI";
 import AboutUI from "../components/ui/AboutUI";
@@ -38,6 +39,8 @@ export default function MainLayout() {
 
   return (
     <main className="relative w-full">
+      <NavbarUI />
+
       <div className="fixed top-0 left-0 w-full h-screen z-0 bg-transparent">
         <Scene />
       </div>

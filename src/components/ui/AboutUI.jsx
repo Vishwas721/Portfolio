@@ -1,6 +1,6 @@
 export default function AboutUI() {
   return (
-    <section className="min-h-screen w-full flex flex-col items-center justify-center text-white py-24 px-8 bg-transparent pointer-events-auto">
+    <section id="about" className="min-h-screen w-full flex flex-col items-center justify-center text-white py-24 px-8 bg-transparent pointer-events-auto">
       <h2 className="text-5xl font-black tracking-tight mb-16 text-center">
         TECHNICAL ARSENAL & PHILOSOPHY
       </h2>

@@ -1,6 +1,6 @@
 export default function HeroUI() {
   return (
-    <div className="h-screen w-full flex flex-col items-center justify-center bg-transparent pointer-events-none px-6 sm:px-8 lg:px-12 text-center">
+    <div id="hero" className="h-screen w-full flex flex-col items-center justify-center bg-transparent pointer-events-none px-6 sm:px-8 lg:px-12 text-center">
       <div className="max-w-6xl">
         <p className="mb-4 text-xs font-semibold uppercase tracking-[0.5em] text-cyan-300/60 sm:text-sm">
           PORTFOLIO / SIGNAL ACTIVE
