@@ -42,7 +42,7 @@ export default function MainLayout() {
         <Scene />
       </div>
 
-      <div className="relative z-10 w-full bg-transparent">
+      <div className="relative z-10 w-full bg-transparent pointer-events-none">
         <HeroUI />
         <ProjectsUI />
         <AboutUI />

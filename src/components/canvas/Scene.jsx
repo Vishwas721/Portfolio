@@ -89,6 +89,8 @@ export default function Scene() {
       dpr={[1, 2]}
       gl={{ antialias: true, alpha: false }}
       style={{ background: "#050505" }}
+      eventSource={document.body}
+      eventPrefix="client"
     >
       <PerspectiveCamera makeDefault position={[0, 0, 5]} fov={75} />
       <fog attach="fog" args={["#050505", 5, 15]} />
