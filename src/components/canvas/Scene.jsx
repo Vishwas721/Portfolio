@@ -7,6 +7,31 @@ import * as THREE from "three";
 
 gsap.registerPlugin(ScrollTrigger);
 
+function CameraController() {
+  const cameraRef = useRef(null);
+
+  useEffect(() => {
+    if (!cameraRef.current) return;
+
+    const ctx = gsap.context(() => {
+      gsap.to(cameraRef.current.position, {
+        z: 3.2,
+        y: -0.3,
+        scrollTrigger: {
+          trigger: document.documentElement,
+          start: "top top",
+          end: "bottom bottom",
+          scrub: 1.5,
+        },
+      });
+    });
+
+    return () => ctx.revert();
+  }, []);
+
+  return <PerspectiveCamera ref={cameraRef} makeDefault position={[0, 0, 5]} fov={75} />;
+}
+
 function MouseParallax({ children }) {
   const groupRef = useRef(null);
 
@@ -92,7 +117,7 @@ export default function Scene() {
       eventSource={document.body}
       eventPrefix="client"
     >
-      <PerspectiveCamera makeDefault position={[0, 0, 5]} fov={75} />
+      <CameraController />
       <fog attach="fog" args={["#050505", 5, 15]} />
       <ambientLight intensity={0.65} />
       <directionalLight position={[4, 6, 8]} intensity={2.25} color="#f5f3ff" />
