@@ -1,5 +1,57 @@
+import { useEffect, useRef } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Canvas } from "@react-three/fiber";
 import { Environment, PerspectiveCamera } from "@react-three/drei";
+
+gsap.registerPlugin(ScrollTrigger);
+
+function KineticMesh() {
+  const meshRef = useRef(null);
+
+  useEffect(() => {
+    if (!meshRef.current) return;
+
+    const ctx = gsap.context(() => {
+      gsap.to(meshRef.current.rotation, {
+        x: Math.PI * 1.5,
+        y: Math.PI * 2,
+        z: Math.PI * 0.5,
+        scrollTrigger: {
+          trigger: document.documentElement,
+          start: "top top",
+          end: "bottom bottom",
+          scrub: 1.5,
+        },
+      });
+
+      gsap.to(meshRef.current.position, {
+        y: -1.25,
+        z: 1.8,
+        scrollTrigger: {
+          trigger: document.documentElement,
+          start: "top top",
+          end: "bottom bottom",
+          scrub: 1.5,
+        },
+      });
+    });
+
+    return () => ctx.revert();
+  }, []);
+
+  return (
+    <mesh ref={meshRef} position={[0, 0, 0]} rotation={[0.35, 0.55, 0]}>
+      <icosahedronGeometry args={[1.25, 1]} />
+      <meshStandardMaterial
+        color="#f5f3ff"
+        wireframe
+        roughness={0.25}
+        metalness={0.1}
+      />
+    </mesh>
+  );
+}
 
 export default function Scene() {
   return (
@@ -15,15 +67,7 @@ export default function Scene() {
       <directionalLight position={[4, 6, 8]} intensity={2.25} color="#f5f3ff" />
       <Environment preset="city" />
 
-      <mesh position={[0, 0, 0]} rotation={[0.35, 0.55, 0]}>
-        <icosahedronGeometry args={[1.25, 1]} />
-        <meshStandardMaterial
-          color="#f5f3ff"
-          wireframe
-          roughness={0.25}
-          metalness={0.1}
-        />
-      </mesh>
+      <KineticMesh />
     </Canvas>
   );
 }

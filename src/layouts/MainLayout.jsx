@@ -1,8 +1,12 @@
 import { useEffect } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Lenis from "@studio-freight/lenis";
 import Scene from "../components/canvas/Scene";
 import HeroUI from "../components/ui/HeroUI";
 import ProjectsUI from "../components/ui/ProjectsUI";
+
+gsap.registerPlugin(ScrollTrigger);
 
 export default function MainLayout() {
   useEffect(() => {
@@ -12,6 +16,8 @@ export default function MainLayout() {
       smoothTouch: false,
       lerp: 0.08,
     });
+
+    lenis.on("scroll", ScrollTrigger.update);
 
     let rafId = 0;
 

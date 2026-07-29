@@ -18,7 +18,7 @@ export default function HeroUI() {
           PERN Stack / AI Workflows
         </p>
 
-        <div className="mx-auto mt-8 h-px w-24 bg-gradient-to-r from-transparent via-cyan-300/60 to-transparent" />
+        <div className="mx-auto mt-8 h-px w-24 bg-linear-to-r from-transparent via-cyan-300/60 to-transparent" />
       </div>
     </div>
   );
