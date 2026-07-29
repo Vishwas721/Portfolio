@@ -1,10 +1,37 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { Canvas } from "@react-three/fiber";
+import { Canvas, useFrame } from "@react-three/fiber";
 import { Environment, PerspectiveCamera, Float, Sparkles } from "@react-three/drei";
+import * as THREE from "three";
 
 gsap.registerPlugin(ScrollTrigger);
+
+function MouseParallax({ children }) {
+  const groupRef = useRef(null);
+
+  useFrame((state, delta) => {
+    if (!groupRef.current) return;
+
+    // Target tilt angles based on normalized cursor coordinates (-1 to 1)
+    const targetX = (state.pointer.x * Math.PI) / 10;
+    const targetY = (state.pointer.y * Math.PI) / 10;
+
+    // Smoothly lerp current group rotation toward pointer coordinates
+    groupRef.current.rotation.y = THREE.MathUtils.lerp(
+      groupRef.current.rotation.y,
+      targetX,
+      0.05
+    );
+    groupRef.current.rotation.x = THREE.MathUtils.lerp(
+      groupRef.current.rotation.x,
+      -targetY,
+      0.05
+    );
+  });
+
+  return <group ref={groupRef}>{children}</group>;
+}
 
 function KineticMesh() {
   const meshRef = useRef(null);
@@ -69,16 +96,18 @@ export default function Scene() {
       <directionalLight position={[4, 6, 8]} intensity={2.25} color="#f5f3ff" />
       <Environment preset="city" />
 
-      <Sparkles
-        count={180}
-        scale={12}
-        size={2.5}
-        speed={0.4}
-        opacity={0.65}
-        color="#22d3ee"
-      />
+      <MouseParallax>
+        <Sparkles
+          count={180}
+          scale={12}
+          size={2.5}
+          speed={0.4}
+          opacity={0.65}
+          color="#22d3ee"
+        />
 
-      <KineticMesh />
+        <KineticMesh />
+      </MouseParallax>
     </Canvas>
   );
 }
