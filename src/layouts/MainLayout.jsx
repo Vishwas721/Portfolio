@@ -6,6 +6,7 @@ import Scene from "../components/canvas/Scene";
 import HeroUI from "../components/ui/HeroUI";
 import ProjectsUI from "../components/ui/ProjectsUI";
 import AboutUI from "../components/ui/AboutUI";
+import ContactUI from "../components/ui/ContactUI";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -45,6 +46,7 @@ export default function MainLayout() {
         <HeroUI />
         <ProjectsUI />
         <AboutUI />
+        <ContactUI />
       </div>
     </main>
   );
