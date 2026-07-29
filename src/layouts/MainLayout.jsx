@@ -5,6 +5,7 @@ import Lenis from "@studio-freight/lenis";
 import Scene from "../components/canvas/Scene";
 import HeroUI from "../components/ui/HeroUI";
 import ProjectsUI from "../components/ui/ProjectsUI";
+import AboutUI from "../components/ui/AboutUI";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -43,6 +44,7 @@ export default function MainLayout() {
       <div className="relative z-10 w-full bg-transparent">
         <HeroUI />
         <ProjectsUI />
+        <AboutUI />
       </div>
     </main>
   );
