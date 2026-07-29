@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Canvas } from "@react-three/fiber";
-import { Environment, PerspectiveCamera } from "@react-three/drei";
+import { Environment, PerspectiveCamera, Float, Sparkles } from "@react-three/drei";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -41,15 +41,17 @@ function KineticMesh() {
   }, []);
 
   return (
-    <mesh ref={meshRef} position={[0, 0, 0]} rotation={[0.35, 0.55, 0]}>
-      <icosahedronGeometry args={[1.25, 1]} />
-      <meshStandardMaterial
-        color="#f5f3ff"
-        wireframe
-        roughness={0.25}
-        metalness={0.1}
-      />
-    </mesh>
+    <Float speed={1.75} rotationIntensity={0.5} floatIntensity={0.75}>
+      <mesh ref={meshRef} position={[0, 0, 0]} rotation={[0.35, 0.55, 0]}>
+        <icosahedronGeometry args={[1.25, 1]} />
+        <meshStandardMaterial
+          color="#f5f3ff"
+          wireframe
+          roughness={0.25}
+          metalness={0.1}
+        />
+      </mesh>
+    </Float>
   );
 }
 
@@ -66,6 +68,15 @@ export default function Scene() {
       <ambientLight intensity={0.65} />
       <directionalLight position={[4, 6, 8]} intensity={2.25} color="#f5f3ff" />
       <Environment preset="city" />
+
+      <Sparkles
+        count={180}
+        scale={12}
+        size={2.5}
+        speed={0.4}
+        opacity={0.65}
+        color="#22d3ee"
+      />
 
       <KineticMesh />
     </Canvas>
