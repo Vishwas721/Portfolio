@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { Canvas, useFrame } from "@react-three/fiber";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Environment, PerspectiveCamera, Float, Sparkles } from "@react-three/drei";
 import * as THREE from "three";
 
@@ -60,6 +60,9 @@ function MouseParallax({ children }) {
 
 function KineticMesh() {
   const meshRef = useRef(null);
+  const { viewport } = useThree();
+  const isMobile = viewport.width < 5;
+  const baseScale = isMobile ? 0.7 : 1;
 
   useEffect(() => {
     if (!meshRef.current) return;
@@ -94,7 +97,7 @@ function KineticMesh() {
 
   return (
     <Float speed={1.75} rotationIntensity={0.5} floatIntensity={0.75}>
-      <mesh ref={meshRef} position={[0, 0, 0]} rotation={[0.35, 0.55, 0]}>
+      <mesh ref={meshRef} position={[0, 0, 0]} rotation={[0.35, 0.55, 0]} scale={baseScale}>
         <icosahedronGeometry args={[1.25, 1]} />
         <meshStandardMaterial
           color="#f5f3ff"
@@ -108,11 +111,16 @@ function KineticMesh() {
 }
 
 export default function Scene() {
+  const isTouchDevice =
+    typeof window !== "undefined" && window.matchMedia("(pointer: coarse)").matches;
+  const pixelRatio = typeof window !== "undefined" ? window.devicePixelRatio || 1 : 1;
+  const dpr = [1, isTouchDevice ? Math.min(pixelRatio, 1.5) : Math.min(pixelRatio, 2)];
+
   return (
     <Canvas
       className="h-full w-full"
-      dpr={[1, 2]}
-      gl={{ antialias: true, alpha: false }}
+      dpr={dpr}
+      gl={{ antialias: true, alpha: false, powerPreference: "high-performance" }}
       style={{ background: "#050505" }}
       eventSource={document.body}
       eventPrefix="client"
