@@ -5,7 +5,10 @@ import Lenis from "@studio-freight/lenis";
 import Scene from "../components/canvas/Scene";
 import NavbarUI from "../components/ui/NavbarUI";
 import HeroUI from "../components/ui/HeroUI";
+import SkillsUI from "../components/ui/SkillsUI";
 import ProjectsUI from "../components/ui/ProjectsUI";
+import HackathonsUI from "../components/ui/HackathonsUI";
+import CertificationsUI from "../components/ui/CertificationsUI";
 import AboutUI from "../components/ui/AboutUI";
 import ContactUI from "../components/ui/ContactUI";
 
@@ -47,7 +50,10 @@ export default function MainLayout() {
 
       <div className="relative z-10 w-full bg-transparent pointer-events-none">
         <HeroUI />
+        <SkillsUI />
         <ProjectsUI />
+        <HackathonsUI />
+        <CertificationsUI />
         <AboutUI />
         <ContactUI />
       </div>
