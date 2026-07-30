@@ -6,11 +6,11 @@ export default function HeroUI() {
           PORTFOLIO / SIGNAL ACTIVE
         </p>
 
-        <h1 className="text-7xl font-black text-white tracking-tighter">
+        <h1 className="text-7xl font-black text-black tracking-tighter">
           VISHWAS K
         </h1>
 
-        <p className="mt-5 text-sm font-semibold uppercase tracking-[0.42em] text-white/70 sm:text-base lg:text-lg">
+        <p className="mt-5 text-sm font-semibold uppercase tracking-[0.42em] text-black/70 sm:text-base lg:text-lg">
           FULL-STACK WEB DEVELOPER
         </p>
 

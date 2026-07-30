@@ -41,7 +41,7 @@ export default function CertificationsUI() {
               className="group border border-white/15 bg-white/5 backdrop-blur-md p-6 shadow-[0_0_0_1px_rgba(255,255,255,0.03),0_24px_80px_rgba(0,0,0,0.34)] transition-transform duration-300 hover:-translate-y-1 hover:border-cyan-400/35"
             >
               <div className="mb-5 flex items-center justify-between gap-4">
-                <span className="h-px flex-1 bg-gradient-to-r from-cyan-300/70 to-transparent" />
+                <span className="h-px flex-1 bg-linear-to-r from-cyan-300/70 to-transparent" />
                 <span className="text-[0.65rem] font-semibold uppercase tracking-[0.45em] text-white/50">
                   MILESTONE
                 </span>

@@ -15,7 +15,7 @@ export default function NavbarUI() {
         href="#hero"
         className="font-mono font-bold text-sm tracking-widest text-white hover:text-cyan-400 transition-colors"
       >
-        VK // ARCHITECT
+       
       </a>
 
       <nav className="hidden md:flex items-center gap-8 text-xs font-mono tracking-widest uppercase text-gray-400">
