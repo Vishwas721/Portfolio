@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import Scene from "../components/canvas/Scene";
 import SwissGridOverlay from "../components/ui/SwissGridOverlay";
 import SidebarUI from "../components/ui/SidebarUI";
-import PaperRipTransition from "../components/ui/PaperRipTransition";
 
 import HeroUI from "../components/ui/HeroUI";
 import SkillsUI from "../components/ui/SkillsUI";
@@ -46,8 +45,6 @@ export default function MainLayout() {
         setIsOpen={setIsSidebarOpen}
       />
 
-      {/* 2. THE VISUAL TEARABLE-UI PAPER RIP TRANSITION */}
-      <PaperRipTransition triggerKey={activeSection} />
 
       {/* 3. THE MAIN STAGE (Pushes left when sidebar opens) */}
       <div

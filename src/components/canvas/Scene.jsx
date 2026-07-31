@@ -25,10 +25,10 @@ export default function Scene({ activeSection }) {
         <pointLight position={[-6, 8, -6]} intensity={1.5} color="#007AFF" />
 
         {/* Section 01: Only show Kinetic Codex when Section 1 is active */}
-        {activeSection === 1 && <KineticCodex isRipped={false} />}
+        {activeSection === 1 && <KineticCodex />}
 
-        {/* Section 02: IsoLab Workbench appears cleanly when we rip to Section 2 */}
-        {activeSection >= 2 && <IsoLab />}
+        {/* Section 02: IsoLab Workbench appears cleanly when Section 2 is active */}
+        {activeSection === 2 && <IsoLab />}
 
         {/* Only apply Halftone Dither to Section 01 so the Pastel Desk stays colorful! */}
         {activeSection === 1 && <PostProcessingPipeline />}

@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 
 const SECTIONS = [
-  { id: 1, label: "01 // HERO", subtitle: "KINETIC CODEX" },
-  { id: 2, label: "02 // ARSENAL", subtitle: "TECHNICAL ISO-LAB" },
+  { id: 1, label: "01 // CODEX", subtitle: "KINETIC CODEX" },
+  { id: 2, label: "02 // ISO-LAB", subtitle: "TECHNICAL ISO-LAB" },
   { id: 3, label: "03 // ARTIFACTS", subtitle: "PERN ARCHITECTURES" },
   { id: 4, label: "04 // CAMPAIGNS", subtitle: "HACKATHON DEPLOYMENTS" },
   { id: 5, label: "05 // CREDENTIALS", subtitle: "VERIFIED MATRIX" },

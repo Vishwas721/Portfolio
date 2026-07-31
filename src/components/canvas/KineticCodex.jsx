@@ -1,14 +1,7 @@
-import React, { useMemo, useRef, useLayoutEffect } from 'react';
+import React, { useMemo, useRef } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-
-gsap.registerPlugin(ScrollTrigger);
-
-export default function KineticCodex({ isRipped }) {
-  const topFlapRef = useRef();
-  const bottomFlapRef = useRef();
+export default function KineticCodex() {
   const materialRef = useRef();
   const { gl } = useThree();
 
@@ -68,47 +61,6 @@ export default function KineticCodex({ isRipped }) {
     return texture;
   }, [gl]);
 
-  // 2. GSAP HORIZONTAL RIP TRIGGER
-// GSAP 3D Z-AXIS PEEL: Halves rip and curl FORWARD toward the camera lens
-// GSAP AUTO-RIP: Rips horizontally when Sidebar is clicked (isRipped === true)
-  useLayoutEffect(() => {
-    if (!topFlapRef.current || !bottomFlapRef.current) return;
-
-    if (isRipped) {
-      // 1. Rip top flap UP and TOWARD camera (+Z)
-      gsap.to(topFlapRef.current.position, {
-        y: 16,
-        z: 10,
-        duration: 1.2,
-        ease: "power3.inOut",
-      });
-
-      // 2. Rip bottom flap DOWN and TOWARD camera (+Z)
-      gsap.to(bottomFlapRef.current.position, {
-        y: -16,
-        z: 10,
-        duration: 1.2,
-        ease: "power3.inOut",
-      });
-
-      // 3. Fade out the torn poster
-      gsap.to(materialRef.current, {
-        opacity: 0,
-        duration: 0.8,
-        delay: 0.3,
-      });
-    } else {
-      // Reset back to intact Hero state if they navigate back to 01 // HERO
-      gsap.to([topFlapRef.current.position, bottomFlapRef.current.position], {
-        y: 0,
-        z: 0,
-        duration: 1.0,
-        ease: "power2.out",
-      });
-      gsap.to(materialRef.current, { opacity: 1, duration: 0.5 });
-    }
-  }, [isRipped]);
-
   // 3. Texture UV Revolving Loop
   useFrame((_, delta) => {
     if (materialRef.current && materialRef.current.map) {
@@ -119,32 +71,16 @@ export default function KineticCodex({ isRipped }) {
 
   return (
     <group>
-      {/* TOP HALF FLAP */}
-      <group ref={topFlapRef} position={[0, 0, 1]}>
-        <mesh rotation={[Math.PI / 2, 0, 0]}>
-          <cylinderGeometry args={[20, 4.5, 38, 128, 1, true, 0, Math.PI]} />
-          <meshBasicMaterial
-            ref={materialRef}
-            map={typographicTexture}
-            side={THREE.BackSide}
-            transparent={true}
-            opacity={1}
-          />
-        </mesh>
-      </group>
-
-      {/* BOTTOM HALF FLAP */}
-      <group ref={bottomFlapRef} position={[0, 0, 1]}>
-        <mesh rotation={[Math.PI / 2, 0, 0]}>
-          <cylinderGeometry args={[20, 4.5, 38, 128, 1, true, Math.PI, Math.PI]} />
-          <meshBasicMaterial
-            map={typographicTexture}
-            side={THREE.BackSide}
-            transparent={true}
-            opacity={1}
-          />
-        </mesh>
-      </group>
+      <mesh rotation={[Math.PI / 2, 0, 0]} position={[0, 0, 1]}>
+        <cylinderGeometry args={[20, 4.5, 38, 128, 1, true, 0, Math.PI * 2]} />
+        <meshBasicMaterial
+          ref={materialRef}
+          map={typographicTexture}
+          side={THREE.BackSide}
+          transparent={true}
+          opacity={1}
+        />
+      </mesh>
     </group>
   );
 }
