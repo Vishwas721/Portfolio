@@ -25,7 +25,6 @@ export default function MainLayout() {
     [activeSection, isTransitioning]
   );
 
-  // 1. TRACKPAD / TOUCH SCREEN SWIPE HANDLERS
   const handlePointerDown = (e) => {
     dragStartX.current = e.clientX;
   };
@@ -41,7 +40,6 @@ export default function MainLayout() {
     }
   };
 
-  // 2. SCROLL WHEEL / MOUSE PAD SCROLL HANDLER (Hisami style!)
   const handleWheel = (e) => {
     if (isTransitioning || wheelCooldown.current) return;
 
@@ -78,11 +76,18 @@ export default function MainLayout() {
           isSidebarOpen ? "-translate-x-90" : "translate-x-0"
         }`}
       >
-        {/* SWISS GRID LOCKED TO HERO (SECTION 01) ONLY! */}
         {activeSection === 1 && <SwissGridOverlay />}
 
-        {/* WebGL Canvas with Native Fluid Metaball Shader */}
-        <div className="fixed inset-0 w-full h-full z-0">
+        {/* 
+            DYNAMIC CROP: Updated to 24 (96px) to match the new border width.
+        */}
+        <div 
+          className={`absolute z-0 transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+            activeSection === 1 
+              ? "top-24 bottom-24 left-24 right-24" 
+              : "inset-0"
+          }`}
+        >
           <Scene
             activeSection={activeSection}
             transitionKey={isTransitioning ? targetSection : null}
@@ -91,17 +96,16 @@ export default function MainLayout() {
           />
         </div>
 
-        {/* Minimalist Foreground HTML HUDs with Smooth Fade */}
         <div className="relative z-10 w-full h-full pointer-events-none flex items-center justify-center transition-opacity duration-500">
           <div
-            className={`absolute inset-0 transition-opacity duration-500 ${
+            className={`absolute inset-0 transition-opacity duration-500 flex items-center justify-center ${
               activeSection === 1 && !isTransitioning ? "opacity-100" : "opacity-0 pointer-events-none"
             }`}
           >
             <HeroUI />
           </div>
           <div
-            className={`absolute inset-0 transition-opacity duration-500 ${
+            className={`absolute inset-0 transition-opacity duration-500 flex items-center justify-center ${
               activeSection === 2 && !isTransitioning ? "opacity-100" : "opacity-0 pointer-events-none"
             }`}
           >

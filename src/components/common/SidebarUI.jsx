@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 
 const SECTIONS = [
   { id: 1, label: "01 // CODEX", subtitle: "KINETIC CODEX" },
@@ -13,26 +13,34 @@ const SECTIONS = [
 export default function SidebarUI({ activeSection, onNavRip, isOpen, setIsOpen }) {
   return (
     <>
-      {/* 1. DEFAULT RIGHT-EDGE TRIGGER BAR (Hamburger Icon =) */}
+      {/* 1. DEFAULT RIGHT-EDGE TRIGGER BAR */}
       <div
         onClick={() => setIsOpen(!isOpen)}
-        className="fixed top-0 right-0 h-full w-16 bg-[#111111]/80 backdrop-blur-md border-l border-white/20 z-50 flex flex-col items-center justify-between py-8 cursor-pointer hover:bg-black transition-colors"
+        className="fixed top-0 right-0 h-full w-24 bg-white border-l border-black z-50 flex flex-col items-center justify-between py-8 cursor-pointer hover:bg-gray-100 transition-colors"
       >
-        <span className="text-white font-mono text-xs tracking-widest -rotate-90 whitespace-nowrap">
+        <span className="text-black font-mono text-xs tracking-widest -rotate-90 whitespace-nowrap">
           VISHWAS K // ARCHITECT
         </span>
 
-        {/* Hamburger / Close Icon */}
-        <div className="w-8 h-8 rounded-full bg-white text-black flex items-center justify-center font-black text-sm">
-          {isOpen ? "×" : "="}
+        {/* 3-Line Hamburger / Close Icon */}
+        <div className="w-8 h-8 flex flex-col items-center justify-center space-y-1">
+          {isOpen ? (
+            <span className="text-black text-2xl font-black leading-none -mt-1">×</span>
+          ) : (
+            <>
+              <div className="w-6 h-0.5 bg-black"></div>
+              <div className="w-6 h-0.5 bg-black"></div>
+              <div className="w-6 h-0.5 bg-black"></div>
+            </>
+          )}
         </div>
 
-        <span className="text-white font-mono text-xs tracking-widest -rotate-90 whitespace-nowrap">
+        <span className="text-black font-mono text-xs tracking-widest -rotate-90 whitespace-nowrap">
           0{activeSection} // ACTIVE
         </span>
       </div>
 
-      {/* 2. HISAMI KURITA PUSH-LEFT PANEL (360px wide drawer on the right) */}
+      {/* 2. HISAMI KURITA PUSH-LEFT PANEL */}
       <aside
         className={`fixed top-0 right-0 h-full w-90 bg-[#E8ECEF] text-[#111111] z-40 border-l border-black/20 flex flex-col justify-between p-8 transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
           isOpen ? "translate-x-0" : "translate-x-full"
