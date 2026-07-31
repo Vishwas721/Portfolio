@@ -11,3 +11,20 @@ body,
 	scroll-behavior: smooth;
 	scroll-padding-top: 5.5rem;
 }
+@keyframes ripUp {
+  0% { transform: translateY(0%); }
+  100% { transform: translateY(-100%); }
+}
+
+@keyframes ripDown {
+  0% { transform: translateY(0%); }
+  100% { transform: translateY(100%); }
+}
+
+.animate-rip-up {
+  animation: ripUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-rip-down {
+  animation: ripDown 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}

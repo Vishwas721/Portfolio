@@ -1,76 +1,73 @@
-import { useEffect } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import Lenis from "@studio-freight/lenis";
-
+import React, { useState } from "react";
 import Scene from "../components/canvas/Scene";
 import SwissGridOverlay from "../components/ui/SwissGridOverlay";
+import SidebarUI from "../components/ui/SidebarUI";
+import PaperRipTransition from "../components/ui/PaperRipTransition";
 
-import NavbarUI from "../components/ui/NavbarUI";
 import HeroUI from "../components/ui/HeroUI";
 import SkillsUI from "../components/ui/SkillsUI";
-import ProjectsUI from "../components/ui/ProjectsUI";
-import HackathonsUI from "../components/ui/HackathonsUI";
-import CertificationsUI from "../components/ui/CertificationsUI";
-import AboutUI from "../components/ui/AboutUI";
-import ContactUI from "../components/ui/ContactUI";
-
-// Register GSAP plugins globally
-gsap.registerPlugin(ScrollTrigger);
 
 export default function MainLayout() {
-  useEffect(() => {
-    // Trackpad-optimized physics engine initialization
-    const lenis = new Lenis({
-      lerp: 0.1, // Tight interpolation halts momentum drift
-      wheelMultiplier: 0.8, // Dampens aggressive touchpad swipes
-      syncTouch: true, // Replaces deprecated smoothTouch, locks momentum scaling
-      smoothWheel: true,
-    });
+  const [activeSection, setActiveSection] = useState(1);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-    // Delegate scroll sync directly to GSAP's ScrollTrigger
-    lenis.on("scroll", ScrollTrigger.update);
+  // TOUCHPAD SWIPE-TO-RIP TRACKER
+  const dragStartX = React.useRef(0);
 
-    // Unify animation timelines by piping Lenis through GSAP's master ticker.
-    // This eradicates desynchronization jitter between the DOM and WebGL canvas.
-    const updateLenis = (time) => {
-      lenis.raf(time * 1000);
-    };
+  const handlePointerDown = (e) => {
+    dragStartX.current = e.clientX;
+  };
 
-    gsap.ticker.add(updateLenis);
+  const handlePointerUp = (e) => {
+    const deltaX = e.clientX - dragStartX.current;
+    const threshold = 150; // Swipe 150px across the pad to trigger
 
-    // Prevent GSAP from attempting to "catch up" on animations if the user switches tabs,
-    // which can cause massive layout jumps upon return.
-    gsap.ticker.lagSmoothing(0);
-
-    return () => {
-      // Rigorous cleanup to prevent memory leaks during React hot-reloads
-      lenis.destroy();
-      gsap.ticker.remove(updateLenis);
-    };
-  }, []);
+    // Swipe Left (< -150px) -> Rips from Section 01 to Section 02
+    if (deltaX < -threshold && activeSection === 1) {
+      setActiveSection(2);
+    }
+    // Swipe Right (> 150px) -> Rips from Section 02 back to Section 01
+    else if (deltaX > threshold && activeSection === 2) {
+      setActiveSection(1);
+    }
+  };
 
   return (
-    <main className="relative w-full bg-transparent">
-      <NavbarUI />
+    <main
+      onPointerDown={handlePointerDown}
+      onPointerUp={handlePointerUp}
+      className="relative w-screen h-screen overflow-hidden bg-white select-none touch-none"
+    >
+      {/* 1. HISAMI KURITA RIGHT SIDEBAR */}
+      <SidebarUI
+        activeSection={activeSection}
+        onNavRip={(id) => setActiveSection(id)}
+        isOpen={isSidebarOpen}
+        setIsOpen={setIsSidebarOpen}
+      />
 
-      {/* Optional Swiss Grid Overlay */}
-      <SwissGridOverlay />
+      {/* 2. THE VISUAL TEARABLE-UI PAPER RIP TRANSITION */}
+      <PaperRipTransition triggerKey={activeSection} />
 
-      {/* Fixed WebGL Canvas */}
-      <div className="fixed top-0 left-0 w-full h-screen z-0 bg-transparent">
-        <Scene />
-      </div>
+      {/* 3. THE MAIN STAGE (Pushes left when sidebar opens) */}
+      <div
+        className={`relative w-full h-full transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+          isSidebarOpen ? "-translate-x-90" : "translate-x-0"
+        }`}
+      >
+        {/* SWISS GRID LOCKED TO HERO (SECTION 01) ONLY! */}
+        {activeSection === 1 && <SwissGridOverlay />}
 
-      {/* UI Content */}
-      <div className="relative z-10 w-full bg-transparent pointer-events-none">
-        <HeroUI />
-        <SkillsUI />
-        <ProjectsUI />
-        <HackathonsUI />
-        <CertificationsUI />
-        <AboutUI />
-        <ContactUI />
+        {/* Fixed WebGL Canvas */}
+        <div className="fixed inset-0 w-full h-full z-0">
+          <Scene activeSection={activeSection} />
+        </div>
+
+        {/* Minimalist Foreground HTML HUDs */}
+        <div className="relative z-10 w-full h-full pointer-events-none flex items-center justify-center">
+          {activeSection === 1 && <HeroUI />}
+          {activeSection === 2 && <SkillsUI />}
+        </div>
       </div>
     </main>
   );

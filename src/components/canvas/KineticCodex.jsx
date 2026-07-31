@@ -6,28 +6,26 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
-export default function KineticCodex() {
-  const meshRef = useRef();
+export default function KineticCodex({ isRipped }) {
+  const topFlapRef = useRef();
+  const bottomFlapRef = useRef();
   const materialRef = useRef();
   const { gl } = useThree();
 
-  // Dynamically generate a 4K Hierarchical Texture with Baked Halftone Shadows
+  // 1. Generate 4K Hierarchical Texture
   const typographicTexture = useMemo(() => {
     const canvas = document.createElement('canvas');
-    const size = 4096; // 4K resolution for razor-sharp macro typography
+    const size = 4096;
     canvas.width = size;
     canvas.height = size;
     const ctx = canvas.getContext('2d');
 
-    // 1. Stark white high-contrast background
     ctx.fillStyle = '#FFFFFF';
     ctx.fillRect(0, 0, size, size);
-
     ctx.fillStyle = '#000000';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
 
-    // 2. Awwwards Hierarchy: Colossal Outer Rim -> Tiny Core Abyss
     const tiers = [
       { text: "VISHWAS K", size: 540, weight: "900", repeat: 2 },
       { text: "FULL-STACK ARCHITECT", size: 360, weight: "900", repeat: 2 },
@@ -50,13 +48,11 @@ export default function KineticCodex() {
       ctx.restore();
     }
 
-    // 3. THE SECRET WEAPON: Bake a vertical shadow gradient directly over the texture!
-    // This gives the Halftone post-processing shader authentic depth gradients to convert
-    // into dots at the center of the tunnel, WITHOUT blowing out the whole screen!
+    // Baked Shadow Gradient
     const shadowGradient = ctx.createLinearGradient(0, 0, 0, size);
-    shadowGradient.addColorStop(0.0, 'rgba(0, 0, 0, 0.0)');   // 0% shadow at outer rim
-    shadowGradient.addColorStop(0.6, 'rgba(0, 0, 0, 0.15)');  // subtle mid-tunnel shading
-    shadowGradient.addColorStop(1.0, 'rgba(0, 0, 0, 0.65)');  // deep shadow at center eye
+    shadowGradient.addColorStop(0.0, 'rgba(0, 0, 0, 0.0)');
+    shadowGradient.addColorStop(0.6, 'rgba(0, 0, 0, 0.15)');
+    shadowGradient.addColorStop(1.0, 'rgba(0, 0, 0, 0.65)');
     ctx.fillStyle = shadowGradient;
     ctx.fillRect(0, 0, size, size);
 
@@ -72,57 +68,83 @@ export default function KineticCodex() {
     return texture;
   }, [gl]);
 
-  // GSAP ScrollTrigger: Camera pushes smoothly into Z-space without jitter
+  // 2. GSAP HORIZONTAL RIP TRIGGER
+// GSAP 3D Z-AXIS PEEL: Halves rip and curl FORWARD toward the camera lens
+// GSAP AUTO-RIP: Rips horizontally when Sidebar is clicked (isRipped === true)
   useLayoutEffect(() => {
-    const ctx = gsap.context(() => {
-      gsap.to(meshRef.current.position, {
-        z: 14,
-        ease: 'none',
-        scrollTrigger: {
-          trigger: document.body,
-          start: 'top top',
-          end: 'bottom bottom',
-          scrub: 0,
-        }
-      });
-    });
-    return () => ctx.revert();
-  }, []);
+    if (!topFlapRef.current || !bottomFlapRef.current) return;
 
-  // STATIONARY FUNNEL + REVOLVING TEXTURE UVs
+    if (isRipped) {
+      // 1. Rip top flap UP and TOWARD camera (+Z)
+      gsap.to(topFlapRef.current.position, {
+        y: 16,
+        z: 10,
+        duration: 1.2,
+        ease: "power3.inOut",
+      });
+
+      // 2. Rip bottom flap DOWN and TOWARD camera (+Z)
+      gsap.to(bottomFlapRef.current.position, {
+        y: -16,
+        z: 10,
+        duration: 1.2,
+        ease: "power3.inOut",
+      });
+
+      // 3. Fade out the torn poster
+      gsap.to(materialRef.current, {
+        opacity: 0,
+        duration: 0.8,
+        delay: 0.3,
+      });
+    } else {
+      // Reset back to intact Hero state if they navigate back to 01 // HERO
+      gsap.to([topFlapRef.current.position, bottomFlapRef.current.position], {
+        y: 0,
+        z: 0,
+        duration: 1.0,
+        ease: "power2.out",
+      });
+      gsap.to(materialRef.current, { opacity: 1, duration: 0.5 });
+    }
+  }, [isRipped]);
+
+  // 3. Texture UV Revolving Loop
   useFrame((_, delta) => {
     if (materialRef.current && materialRef.current.map) {
-      // Revolve the text around the stationary tunnel walls
       materialRef.current.map.offset.x -= delta * 0.06;
-      // Gently pull the letters inward toward the center eye
       materialRef.current.map.offset.y -= delta * 0.04;
     }
   });
 
   return (
-    <mesh
-      ref={meshRef}
-      position={[0, 0, 1]}
-      rotation={[Math.PI / 2, 0, 0]}
-    >
-      {/* 
-        STATIONARY WHIRLPOOL GEOMETRY:
-        radiusTop: 20 (Colossal outer opening filling the entire screen)
-        radiusBottom: 4.5 (Dead-center, circular eye framing your Hero UI)
-        height: 38
-        radialSegments: 128 (Ultra-high polygon count for a mathematically perfect circle!)
-      */}
-      <cylinderGeometry args={[20, 4.5, 38, 128, 1, true]} />
-      
-      {/* 
-        meshBasicMaterial + Baked Canvas Shading:
-        Guarantees your text NEVER disappears into black polka-dots!
-      */}
-      <meshBasicMaterial
-        ref={materialRef}
-        map={typographicTexture}
-        side={THREE.BackSide}
-      />
-    </mesh>
+    <group>
+      {/* TOP HALF FLAP */}
+      <group ref={topFlapRef} position={[0, 0, 1]}>
+        <mesh rotation={[Math.PI / 2, 0, 0]}>
+          <cylinderGeometry args={[20, 4.5, 38, 128, 1, true, 0, Math.PI]} />
+          <meshBasicMaterial
+            ref={materialRef}
+            map={typographicTexture}
+            side={THREE.BackSide}
+            transparent={true}
+            opacity={1}
+          />
+        </mesh>
+      </group>
+
+      {/* BOTTOM HALF FLAP */}
+      <group ref={bottomFlapRef} position={[0, 0, 1]}>
+        <mesh rotation={[Math.PI / 2, 0, 0]}>
+          <cylinderGeometry args={[20, 4.5, 38, 128, 1, true, Math.PI, Math.PI]} />
+          <meshBasicMaterial
+            map={typographicTexture}
+            side={THREE.BackSide}
+            transparent={true}
+            opacity={1}
+          />
+        </mesh>
+      </group>
+    </group>
   );
 }
